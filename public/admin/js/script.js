@@ -1,3 +1,4 @@
+
 // button status
 const buttonStatus = document.querySelectorAll("[button-status]");
 if (buttonStatus.length > 0) {
@@ -55,8 +56,7 @@ const buttonChangeStatus = document.querySelectorAll("[button-change-status]");
 if (buttonChangeStatus.length > 0){
     const formChangeStatus = document.querySelector("[form-change-status]");
     const path = formChangeStatus.getAttribute("data-path");
-
-
+    // console.log(path);
     buttonChangeStatus.forEach(button => {
         button.addEventListener("click", () => {
             const statusCurrent = button.getAttribute("data-status");
@@ -146,10 +146,11 @@ if(formChangeMulti) {
 
 // Delete Item
 const buttonsDelete = document.querySelectorAll("[button-delete]");
+console.log(buttonsDelete);
 if (buttonsDelete.length > 0) {
   const formDeleteItem = document.querySelector("[form-delete-item]");
   const path = formDeleteItem.getAttribute("data-path");
-
+  console.log(path);
   buttonsDelete.forEach(button => {
     button.addEventListener("click", () => {
       const isConfirm = confirm("Bạn có chắc muốn xóa bản ghi này?");
@@ -166,7 +167,8 @@ if (buttonsDelete.length > 0) {
     });
   });
 }
-// Delete Item
+// end Delete Item
+
 // Show Alert
 const showAlert = document.querySelector("[show-alert]");
 if(showAlert) {
@@ -196,3 +198,91 @@ if(uploadImage) {
   });
 }
 // End Preview Image
+// Sort
+const sort = document.querySelector("[sort]");
+if(sort) {
+  let url = new URL(window.location.href);
+
+  const sortSelect = sort.querySelector("[sort-select]");
+  const sortClear = sort.querySelector("[sort-clear]");
+
+  // Sắp xếp
+  sortSelect.addEventListener("change", () => {
+    const [sortKey, sortValue] = sortSelect.value.split("-");
+
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+
+    window.location.href = url.href;
+  });
+
+  // Xóa sắp xếp
+  sortClear.addEventListener("click", () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+
+    window.location.href = url.href;
+  });
+
+  // Thêm selected cho option
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+
+  if(sortKey && sortValue) {
+    const string = `${sortKey}-${sortValue}`;
+    const optionSelected = sortSelect.querySelector(`option[value="${string}"]`);
+    optionSelected.selected = true;
+    // optionSelected.setAttribute("selected", true);
+  }
+}
+// End Sort
+// permissions
+const tablePermissions = document.querySelector("[table-permissions]");
+  // Submit Data
+if (tablePermissions) {
+    // Submit Data
+  const buttomSubmit = document.querySelector("[button-submit]");
+  buttomSubmit.addEventListener("click", () => {
+    const roles = [];
+    const rows = tablePermissions.querySelectorAll("[data-name]");
+    rows.forEach(row => {
+      const name = row.getAttribute("data-name");
+      const inputs = row.querySelectorAll("input");
+      if(name=="id"){
+        inputs.forEach(input => {
+          const id = input.value;
+          roles.push({
+            id: id,
+            permissions: []
+          });
+        });
+      } else {
+        inputs.forEach((input, index) => {
+          if(input.checked) {
+            roles[index].permissions.push(name);
+          }
+        });
+      }
+    });
+    const formChangePermissions = document.querySelector("[form-change-permissions]");
+    const inputRoles = formChangePermissions.querySelector("input[name='roles']");
+    inputRoles.value = JSON.stringify(roles);
+    formChangePermissions.submit();
+    });
+
+   //Data Default
+  const divRecords = document.querySelector("[data-records]");
+  if(divRecords) {
+    const records = JSON.parse(divRecords.getAttribute("data-records"));
+    records.forEach((record, index) => {
+      const permissions = record.permissions;
+      
+      permissions.forEach(permission => {
+        const row = tablePermissions.querySelector(`[data-name="${permission}"]`);
+        const input = row.querySelectorAll("input")[index];
+        input.checked = true;
+      });
+    });
+  }
+}
+//end permissions

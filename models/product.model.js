@@ -4,6 +4,10 @@ mongoose.plugin(slug);
 
 const productSchema = new mongoose.Schema({
     title: String,
+    product_category_id: {
+        type: String,
+        default: ""
+    },
     slug: { 
         type: String,
         slug: "title",
@@ -20,9 +24,24 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deletedAt: Date
+    // deletedAt: Date,
+    createdBy: {
+        accountId: String,
+        createdAt: Date
+    },
+    deletedBy: {
+        accountId: String,
+        deletedAt: Date
+    },
+    updatedBy: [
+        {
+            accountId: String,
+            updatedAt: Date 
+        }
+    ],
+    featured: String
 }, {
-    timestamps: true
+    // timestamps: true
 });
 
 const Product = mongoose.model("Product", productSchema, "products");
