@@ -40,7 +40,8 @@ block main
                   height="auto"
                 )
               td #{item.fullName}
-              td #{item.title}
+              td #{item.role.title}
+              //- td #{role.title}
               td #{item.email}
               td
                 if (item.status === "active")

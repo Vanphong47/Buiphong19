@@ -14,7 +14,7 @@ module.exports.index = async (req, res) => {
         item.priceNew = item.priceNew.toFixed(0);
     }
 
-    console.log(products);
+    // console.log(products);
 
     res.render("client/pages/products/index", {
         pageTitle: "Danh sach san pham",

@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
     }
     res.render("admin/pages/accounts/index.pug", {
         pageTitle: "danh sách tài khoản",
-        records: records
+        records: records,
     });
 }
 //[GET] /admin/account/create
@@ -52,7 +52,7 @@ module.exports.edit = async (req, res) => {
         deleted: false
       });
       res.render("admin/pages/accounts/edit.pug", {
-        pageTitle: "Chỉnh sửa danh mục sản phẩm",
+        pageTitle: "Chỉnh sửa tài khoản",
         data: data,
         roles: roles
     });
